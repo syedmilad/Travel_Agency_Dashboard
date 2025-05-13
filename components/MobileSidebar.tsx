@@ -1,45 +1,46 @@
 // @ts-nocheck
-import { useRef } from "react";
+
 import { Link } from "react-router";
 import pkg from "@syncfusion/ej2-react-navigations";
 const { SidebarComponent } = pkg;
+import NavItems from "./NavItems";
 
 const MobileSidebar = () => {
-  const sidebarRef = useRef(null);
+  let sidebar: SidebarComponent;
 
-  const handleToggle = () => {
-    console.log("toggle");
-    if (sidebarRef.current) {
-      sidebarRef.current.toggle(); // Call Syncfusion's toggle method
-    }
+  const toggleSidebar = () => {
+    sidebar.toggle();
   };
+
   return (
     <div className="mobile-sidebar wrapper">
       <header>
         <Link to="/">
           <img
             src="/assets/icons/logo.svg"
-            alt="logo"
+            alt="Logo"
             className="size-[30px]"
           />
+
           <h1>Tourvisto</h1>
         </Link>
 
-        <button onClick={handleToggle}>
+        <button onClick={toggleSidebar}>
           <img src="/assets/icons/menu.svg" alt="menu" className="size-7" />
         </button>
       </header>
 
       <SidebarComponent
         width={270}
-        ref={sidebarRef}
-        created={() => sidebarRef.current?.hide()}
+        ref={(Sidebar) => (sidebar = Sidebar)}
+        created={() => sidebar.hide()}
         closeOnDocumentClick={true}
         showBackdrop={true}
+        type="over"
       >
-        </SidebarComponent>
+        <NavItems handleClick={toggleSidebar} />
+      </SidebarComponent>
     </div>
   );
 };
-
 export default MobileSidebar;
