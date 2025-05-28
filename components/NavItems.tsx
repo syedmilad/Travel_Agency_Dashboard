@@ -8,7 +8,7 @@ const user = {
   image: "/assets/images/david.webp",
 };
 
-const NavItems = () => {
+const NavItems = ({sidebar}: {sidebar?: ()=> void}) => {
   return (
     <section className="nav-items">
       <Link to="/" className="link-logo">
@@ -22,6 +22,7 @@ const NavItems = () => {
             <NavLink to={href} key={id}>
               {({ isActive }: { isActive: boolean }) => (
                 <div
+                onClick={sidebar}
                   className={cn("group nav-item ", {
                     "bg-primary-100 !text-white": isActive,
                   })}
