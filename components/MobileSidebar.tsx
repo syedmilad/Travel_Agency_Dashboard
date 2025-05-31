@@ -8,6 +8,8 @@ const MobileSidebar = () => {
 
   const sidebarToggle = () =>{
     sidebar.toggle();
+
+    console.log("sidebar", sidebar);
   }
 
   return (
