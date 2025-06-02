@@ -1,4 +1,5 @@
-import { StockChartStripLineSettings,ChipListComponent,ChipsDirective } from "@syncfusion/ej2-react-charts";
+import { ChipDirective, ChipListComponent, ChipsDirective } from "@syncfusion/ej2-react-buttons";
+import { getFirstWord } from "lib/utils";
 import { Link, useLocation } from "react-router";
 
 const TripCard = ({
@@ -36,11 +37,18 @@ const TripCard = ({
         <ChipListComponent>
 
           <ChipsDirective>
-            {tags.map(( ))}
+            {tags.map((tag,index)=>(
+              <ChipDirective
+                key={tag}
+                text={getFirstWord(tag)}
+                cssClass={`${index === 1 ? "!bg-pink-50 !text-pink-500" : "!bg-suceessp-50 !text-success-700"}`}
+              />
+            ))}
           </ChipsDirective>
         </ChipListComponent>
       </div>
 
+            <article className="tripCard-pill">{price}</article>
     </Link>
   );
 };
