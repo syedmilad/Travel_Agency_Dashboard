@@ -48,7 +48,7 @@ export const storeUserData = async () => {
 const getGooglePicture = async (accessToken: string) => {
   try {
     const response = await fetch(
-      "https://people.googleapis.com/v1/people/me?personFields=photos",
+      "https://people.googleapis.com/v1/people/me?personFields=photos",  
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
     if (!response.ok) throw new Error("Failed to fetch Google profile picture");
@@ -57,7 +57,7 @@ const getGooglePicture = async (accessToken: string) => {
     return photos?.[0]?.url || null;
   } catch (error) {
     console.error("Error fetching Google picture:", error);
-    return null;
+    return redirect("sign-in");
   }
 };
 

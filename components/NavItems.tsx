@@ -1,14 +1,16 @@
 import { cn } from "lib/utils";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useLoaderData, useNavigate } from "react-router";
+import { logoutUser } from "~/appwrite/auth";
 import { sidebarItems } from "~/constants";
 
-const user = {
-  name: "John Doe",
-  email: "john.doe@example.com",
-  image: "/assets/images/david.webp",
-};
-
 const NavItems = ({sidebar}: {sidebar?: ()=> void}) => {
+  const user = useLoaderData()
+  const navigate = useNavigate()
+
+  const logoutHandler = async () => {
+    await logoutUser();
+    navigate("/sign-in");
+  }
   return (
     <section className="nav-items">
       <Link to="/" className="link-logo">
@@ -42,15 +44,15 @@ const NavItems = ({sidebar}: {sidebar?: ()=> void}) => {
 
       <footer className="nav-footer">
         <img
-          src={user.image || "assets/image/david.webp"}
-          alt={user.name || "david"}
+          src={user?.image || "assets/image/david.webp"}
+          alt={user?.name || "david"}
         />
         <article>
-          <h2>{user.name}</h2>
-          <p>{user.email}</p>
+          <h2>{user?.name}</h2>
+          <p>{user?.email}</p>
         </article>
         <button
-          onClick={() => console.log("logout")}
+          onClick={logoutHandler}
           className="cursor-pointer size-6"
         >
           <img src="/assets/icons/logout.svg" alt="logout" />
