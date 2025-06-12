@@ -8,7 +8,6 @@ import { getUser } from "~/appwrite/auth";
 export const clientLoader = async () => await getUser();
 
 const dashboard = ({ loaderData }: Route.ComponentProps) => {
-  console.log("Dashboard loaderData:", loaderData);
   const user = loaderData as User | null;
   return (
     <main className="dashboard wrapper">

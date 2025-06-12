@@ -5,7 +5,6 @@ import { sidebarItems } from "~/constants";
 
 const NavItems = ({sidebar}: {sidebar?: ()=> void}) => {
   const user = useLoaderData()
-  console.log("user", user);
   const navigate = useNavigate()
 
   const logoutHandler = async () => {
