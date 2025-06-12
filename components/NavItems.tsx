@@ -5,6 +5,7 @@ import { sidebarItems } from "~/constants";
 
 const NavItems = ({sidebar}: {sidebar?: ()=> void}) => {
   const user = useLoaderData()
+  console.log("user", user);
   const navigate = useNavigate()
 
   const logoutHandler = async () => {
@@ -44,7 +45,8 @@ const NavItems = ({sidebar}: {sidebar?: ()=> void}) => {
 
       <footer className="nav-footer">
         <img
-          src={user?.image || "assets/image/david.webp"}
+          src={user?.imageUrl || "assets/image/david.webp"}
+          referrerPolicy="no-referrer"
           alt={user?.name || "david"}
         />
         <article>
