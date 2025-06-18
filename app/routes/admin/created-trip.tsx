@@ -9,6 +9,8 @@ import { ID } from "appwrite";
 import Header from "components/Header";
 import { cn, formatKey } from "lib/utils";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { account } from "~/appwrite/client";
 import { comboBoxItems, selectItems } from "~/constants";
 import { world_map } from "~/constants/world_map";
 
@@ -19,11 +21,12 @@ const CreatedTrip = () => {
   const [formData, setFormData] = useState({
     country: countriesData[0]?.text || "",
     travelStyle: "",
-    budge: "",
+    budget: "",
     duration: 0,
-    gruptType: "",
+    groupType: "",
     interest: "",
   });
+  const navigate = useNavigate();
   useEffect(() => {
     async function fetchData() {
       try {
@@ -39,7 +42,6 @@ const CreatedTrip = () => {
           };
         });
         setCountriesData(result);
-        console.log("result==>", result, data);
       } catch (error) {
         console.log("error", error);
       }
@@ -47,26 +49,60 @@ const CreatedTrip = () => {
 
     fetchData();
   }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
+    console.log("formData", formData);
+
     if (
       !formData.country ||
       !formData.travelStyle ||
-      !formData.budge ||
+      !formData.budget ||
       !formData.duration ||
-      !formData.gruptType ||
+      !formData.groupType ||
       !formData.interest
     ) {
       setError("All fields are required");
       setLoading(false);
       return; /** immidiately return the function */
     }
-    if(formData.duration < 1 || formData.duration > 10){
-        setError("Duration must be between 1 to 10 days");
+    if (formData.duration < 1 || formData.duration > 10) {
+      setError("Duration must be between 1 to 10 days");
       setLoading(false);
       return; /** immidiately return the function */
+    }
+    const user = await account.get();
+       if(!user.$id) {
+           console.error('User not authenticated');
+           setLoading(false)
+           return;
+       }
+    try {
+      const response = await fetch("/api/create-trip", {
+        method: "POST",
+        headers: {
+          "Content-Type": "appliction/json",
+        },
+        body: JSON.stringify({
+          country: formData.country,
+          travelStyle: formData.travelStyle,
+          budge: formData.budge,
+          duration: formData.duration,
+          groupType: formData.groupType,
+          interest: formData.interest,
+          userId: user?.$id || "", // Assuming you have a user object available
+        }),
+      });
+      const result: CreateTripResponse = await response.json();
+      if(result?.id) {
+        navigate(`/trips/${result.id}`);
+      }else{
+        console.log("Error creating trip");
+      }
+    } catch (error) {
+      console.log("Error Generating travel plan", error);
     }
   };
   const handleChange = (key: keyof TripFormData, value: string | number) => {
